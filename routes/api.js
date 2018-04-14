@@ -34,7 +34,7 @@ api.get('/users/feed', function(req, res) {
           question.isLiked = (question.upVotedBy.includes(req.userId)) ? true : false;
           questions[i] = question;
         }
-        console.log(skipped);
+
         res.status(200).json({success: true, questions});
 
     });

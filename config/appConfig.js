@@ -30,7 +30,7 @@ console.log(req.body);
 
       User.create(req.body.user, function(err, user){
         if(err || !user) {
-          return res.status(400).json({success: false, msg: 'not registered'});
+          return res.status(400).json({success: false, msg: 'not registered', err});
         }else{
           return res.status(200).json({success: true, msg: 'User registered'});
         }

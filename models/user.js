@@ -12,13 +12,13 @@ const userSchema = new mongoose.Schema({
 
   username: { type: String, unique: true, required: '{PATH} is required!' },
 
-  email: { type: String, lowercase: true, unique: true, regex: /^[a-z]+[\.]{0,1}[a-z]+[\d]*@el-eng\.menofia\.edu\.eg$/, required: '{PATH} is required!' },
+  email: { type: String, lowercase: true, unique: true, required: '{PATH} is required!', match: [/^[a-z]+[\.]{0,1}[a-z]+[\d]*@el-eng\.menofia\.edu\.eg$/, 'Please fill a valid email address'] },
 
   password: { type: String, required: '{PATH} is required!'},
 
-  profilePhoto: {type: String, default: '=====' },
+  profilePhoto: {type: String, default: 'https://i.imgur.com/wYvXj8g.jpg' },
 
-  coverPhoto: {type: String, default: '=====' },
+  coverPhoto: {type: String, default: 'https://i.imgur.com/wYvXj8g.jpg' },
 
   about: String,
 

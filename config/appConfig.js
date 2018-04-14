@@ -21,20 +21,13 @@ app.use(bodyParser.json());
 app.use('/api', Token.verify, api);
 
 app.post('/register', function(req, res){
-  let newUser = new User({
-    username: req.body.fullName,
-    password: req.body.password,
-    email: req.body.email,
-    academicNumber: req.body.academicNumber,
-    visiableName: req.body.visiableName
-  });
 
-  newUser.save(function(err, user){
+  User.create(req.body.user, function(err, user){
     if(err || !user) {
       console.log(err);
-      return res.status(500).json({success: false, msg: 'not register, ' + err});
+      return res.status(400).json({success: false, msg: 'not register, ' + err});
     }else{
-      res.status(200).json({success: true, msg: 'User registered'});
+      return res.status(200).json({success: true, msg: 'User registered'});
     }
   });
 });
@@ -44,8 +37,12 @@ app.post('/login', function(req, res) {
     if(!user) return res.status(404).json({success: false, msg: 'incorrect email'});
     if(user.password !== req.body.password) return res.status(401).json({success: false, msg: 'incorrect email'});
     var token = Token.sign({id: user._id});
-    res.status(200).json({success: true, msg: 'User registered', auth: true, userid: user._id, token: token });
+    res.status(200).json({success: true, msg: 'User Logged', userId: user._id, token: token });
   });
+});
+
+app.get('*', function(req, res){
+  return res.status(404).json({msg: 'Page not found'});
 });
 
 module.exports = app;

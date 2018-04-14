@@ -19,7 +19,7 @@ function VerifyToken(req, res, next) {
 };
 
 function SignToken(payload) {
-  return jwt.sign(payload, keys.secret, {expiresIn: 86400});
+  return jwt.sign(payload, keys.secret, {expiresIn: 604800});
 };
 
 module.exports.verify = VerifyToken;

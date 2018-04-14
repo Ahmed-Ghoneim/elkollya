@@ -8,11 +8,11 @@ const userSchema = new mongoose.Schema({
 
   academicNumber: { type: Number, min: 1, unique: true, required: '{PATH} is required!',  validate: unsignedInteger},
 
-  visiableName: String,
+  visiableName: { type: String, required: '{PATH} is required!' },
 
   username: { type: String, unique: true, required: '{PATH} is required!' },
 
-  email: { type: String, lowercase: true, unique: true, required: '{PATH} is required!' },
+  email: { type: String, lowercase: true, unique: true, regex: /^[a-z]+[\.]{0,1}[a-z]+[\d]*@el-eng\.menofia\.edu\.eg$/, required: '{PATH} is required!' },
 
   password: { type: String, required: '{PATH} is required!'},
 

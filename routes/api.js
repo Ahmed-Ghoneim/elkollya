@@ -10,20 +10,33 @@ const Department = require('../models/department');
 const Project = require('../models/project');
 
 
-
 // read all questions that related to the user department in his academic year.
-api.get('/users/:id/feed', function(req, res) {
+api.get('/users/feed', function(req, res) {
+
+  var skipped = parseInt(req.query.skip);
+  var limitted = 10;
 
   // find the academic year that the student is enrolled.
-  User.findById(req.params.id, 'academicYear', function(err, user){
-    if(err) return res.status(500).json({success: false, msg: 'server error'});
+  User.findById(req.userId, 'academicYear', function(err, user){
+    if(err) return res.status(500).json({success: false, msg: 'server errorU'});
     if(!user) return res.status(404).json({success: false, msg: 'user not found'});
 
-    // load questions from database from this academic year.
-    Question.find({academicYear: user.academicYear}, function(err, questions){
-      if(err) return res.status(500).json({success: false, msg: 'server error'});
-      if(!questions)  return res.status(404).json({success: false, msg: 'No content avilable'});
-      res.status(200).json({success: true, questions});
+    Question.find({academicYear: user.academicYear}).
+    populate({path: 'askedBy', select: ['profilePhoto', 'visiableName']}).skip(skipped).limit(limitted).
+    exec(function(err, questions){
+        if(err) return res.status(500).json({success: false, msg: 'server errorQ'});
+        if(!questions)  return res.status(404).json({success: false, msg: 'content not avilable'});
+
+        for (var i = 0; i < questions.length; i++) {
+
+          var question = questions[i].toObject();
+          question.upVotedBy = question.upVotedBy.toString();
+          question.isLiked = (question.upVotedBy.includes(req.userId)) ? true : false;
+          questions[i] = question;
+        }
+        console.log(skipped);
+        res.status(200).json({success: true, questions});
+
     });
 
   });

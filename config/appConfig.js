@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use('/api', Token.verify, api);
 
 app.post('/register', function(req, res){
-
+console.log(req.body);
   bcrypt.genSalt(10, function(err, salt){
     bcrypt.hash(req.body.user.password, salt, function(err, hash){
       if(err) throw err;

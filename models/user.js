@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
 
   academicNumber: { type: Number, min: 1, unique: true, required: '{PATH} is required!',  validate: unsignedInteger},
 
-  visiableName: { type: String, required: '{PATH} is required!' },
+  visibleName: { type: String, required: '{PATH} is required!' },
 
   username: { type: String, unique: true, required: '{PATH} is required!' },
 

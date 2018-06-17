@@ -1,16 +1,12 @@
 const mongoose = require('mongoose');
 
-function unsignedInteger (number) {
-  return Math.round(number);
-}
-
 var questionSchema = new mongoose.Schema({
 
-  question: { type: String, required: '{PATH} is required!' },
+  body: { type: String, required: '{PATH} is required!' },
 
-  date: { type: Date, default: Date.now },
+  date: { type: Date },
 
-  academicYear: { type: Number, min: 1, max: 5, validate: unsignedInteger},
+  academicYear: { type: Number, match: /^[1-5]$/},
 
   // a property that indicate if the question could
   // be answered anymore or not.
@@ -19,8 +15,11 @@ var questionSchema = new mongoose.Schema({
   // array that contains all the tags included in this question.
   tags: [String],
 
+  // references the department ._id from departments collection.
+  department: { type: mongoose.Schema.Types.ObjectId, ref: 'department' },
+
   // references the subject ._id that the question is related to from subjects collection.
-  subjectId: [{type:mongoose.Schema.Types.ObjectId, ref: 'subject'}],
+  subject: {type:mongoose.Schema.Types.ObjectId, required: true, ref: 'subject'},
 
   // references the user ._id who asked the question from users collection.
   askedBy: { type: mongoose.Schema.Types.ObjectId, required: '{PATH} is required!', ref: 'user' },
@@ -36,6 +35,24 @@ var questionSchema = new mongoose.Schema({
   // references all users ._id who down voted
   // that question from users collection.
   downVotedBy: [{type: mongoose.Schema.Types.ObjectId, ref: 'user'}]
+});
+
+questionSchema.pre('save', function(next){
+  require('./user').findById(this.askedBy, 'academicYear department isAllowedToPost', function(err, user){
+    if(err) return next(err);
+    if(!user.isAllowedToPost) return next(new Error('This user is not allowed to post questions'));
+    this.academicYear = user.academicYear;
+    this.department = user.department;
+    this.date = new Date().toLocaleString('en-US', { timeZone: 'Africa/Cairo' });
+  });
+  next();
+});
+
+questionSchema.post('remove', function(next){
+  require('./answer').remove({_id: {$in: this.answers}}, function(err, answers){
+    if(err) return next(err);
+  });
+  next();
 });
 
 module.exports = mongoose.model('question', questionSchema);

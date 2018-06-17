@@ -1,0 +1,11 @@
+{
+  "database": "mongodb://elkollya:elkollya@ds039271.mlab.com:39271/elkollya",
+  "secret": "AklfYmq&lP=",
+  "adminSecret": "o&rmS#alfh@5V",
+  "imgur": {
+    "accessToken"  : "Bearer 1cc399c334af519baff3405057d0b7fd5d47db65",
+    "refreshToken" : "ddd68117eaaa87dd261daadeafd8255bb90eb05d",
+    "clientSecret" : "0974ee93ea370805f67c634270643d065de732a8",
+    "clientId"     : "f378d2fa7dab083"
+  }
+}

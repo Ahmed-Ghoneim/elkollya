@@ -45,5 +45,28 @@ answers.delete('/:answerId', function(req, res){
   });
 });
 
+// upvote an answer
+answers.post('/:answerId/upvote', function(req, res){
+  // find that answer.
+  Answer.findByIdAndUpdate(req.params.answerId, { $addToSet: {"upVotedBy": req.userId}}, function(err, answer){
+    if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
+    if(!answer) return res.status(404).json({success: false, msg: 'Answer not found'});
+    // add the upvote.
+    else return res.status(200).json({success: true, msg: 'upvoted successfuly', totalUpvotes: answer.upVotedBy.length});
+  });
+});
+
+
+// remove upvote for an answer with its id.
+answers.delete('/:answerId/upvote', function(req, res){
+  // find that answer.
+  Answer.findByIdAndUpdate(req.params.answerId, { $removeFromSet: {"upVotedBy": req.userId}}, function(err, answer){
+    if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
+    if(!answer) return res.status(404).json({success: false, msg: 'Answer not found'});
+    // remove the upvote.
+    else return res.status(200).json({success: true, msg: 'upvoted successfuly', totalUpvotes: answer.upVotedBy.length});
+  });
+});
+
 
 module.exports = answers;

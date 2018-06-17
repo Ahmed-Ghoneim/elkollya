@@ -16,9 +16,9 @@ var answerSchema = new mongoose.Schema({
   answeredBy: { type: mongoose.Schema.Types.ObjectId, required: '{PATH} is required!', ref: 'user' },
 
   /* multivalued attributes hold the ._id s from users collection. */
-  upvotedBy: [{type: mongoose.Schema.Types.ObjectId, ref:'user'}],
+  upvotedBy: [{type: mongoose.Schema.Types.ObjectId, unique: true, ref:'user'}],
 
-  downVotedBy: [{type: mongoose.Schema.Types.ObjectId, ref: 'user'}]
+  downVotedBy: [{type: mongoose.Schema.Types.ObjectId, unique: true, ref: 'user'}]
 });
 
 

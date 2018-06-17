@@ -16,7 +16,7 @@ var questionSchema = new mongoose.Schema({
   tags: [String],
 
   // references the department ._id from departments collection.
-  department: { type: mongoose.Schema.Types.ObjectId, ref: 'department' },
+  department: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'department' },
 
   // references the subject ._id that the question is related to from subjects collection.
   subject: {type:mongoose.Schema.Types.ObjectId, required: true, ref: 'subject'},
@@ -30,11 +30,11 @@ var questionSchema = new mongoose.Schema({
 
   // references all users ._id who up voted
   // that question from users collection.
-  upVotedBy: [{type: mongoose.Schema.Types.ObjectId, ref: 'user'}],
+  upVotedBy: [{type: mongoose.Schema.Types.ObjectId, unique: true, ref: 'user'}],
 
   // references all users ._id who down voted
   // that question from users collection.
-  downVotedBy: [{type: mongoose.Schema.Types.ObjectId, ref: 'user'}]
+  downVotedBy: [{type: mongoose.Schema.Types.ObjectId, unique: true, ref: 'user'}]
 });
 
 questionSchema.pre('save', function(next){

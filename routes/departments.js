@@ -1,7 +1,5 @@
 const departments = require('express').Router();
-// load models.
-const User = require('../models/user');
-const Subject = require('../models/subject');
+// load model.
 const Department = require('../models/department');
 
 

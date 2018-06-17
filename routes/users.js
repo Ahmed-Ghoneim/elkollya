@@ -62,12 +62,15 @@ users.get('/:userId/subjects', function(req, res){
   });
 });
 
-//
-// users.post('/:id/subjects', function(req, res){
-//   User.findByIdAndUpdate(req.params.id, { $addToSet: {"subjects": req.body.userSubject} }, function(err, user){
-//     if(err) return res.status(400).json({success: false, msg: err});
-//     res.status(200).json({success: true, msg: user.subjects.color});
-//   });
-// });
+
+users.post('/:userId/subjects/:subjectId', function(req, res){
+  if(!req.isAdmin)  return res.status(403).json({success: false, msg: 'Only professors allowed to add subject to the users'});
+  
+  User.findByIdAndUpdate(req.params.userId, { $addToSet: {"subjects": req.params.subjectId} }, function(err, user){
+    if(err) return res.status(400).json({success: false, msg: 'something went wrong, ' + err});
+    if(!user) return res.status(404).json({success: false, msg: 'User not found'});
+    return res.status(200).json({success: true, subjects: user.subjects});
+  });
+});
 
 module.exports = users;

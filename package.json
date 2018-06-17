@@ -16,6 +16,7 @@
     "express": "4.16.3",
     "jsonwebtoken": "8.2.0",
     "mongoose": "5.0.12",
+    "mongoose-sequence": "4.0.1",
     "request": "2.85.0"
   },
   "devDependencies": {

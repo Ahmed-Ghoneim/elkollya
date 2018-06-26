@@ -1,5 +1,5 @@
 {
-  "database": "mongodb://elkollya:elkollya@ds039271.mlab.com:39271/elkollya",
+  "database": "mongodb://localhost/elkollya",
   "secret": "AklfYmq&lP=",
   "adminSecret": "o&rmS#alfh@5V",
   "imgur": {

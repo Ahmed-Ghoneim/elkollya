@@ -47,10 +47,10 @@ const userSchema = new mongoose.Schema({
   department: { type: mongoose.Schema.Types.ObjectId, ref: 'department' },
 
   // references the registered subjects ._id s from subjects collection.
-  subjects: [{type: mongoose.Schema.Types.ObjectId, unique: true, ref: 'subject' }],
+  subjects: [{type: mongoose.Schema.Types.ObjectId, ref: 'subject' }],
 
   // references the projects ._id s that the user has participated in from projects collectios.
-  projects: [{type: mongoose.Schema.Types.ObjectId, unique: true, ref: 'project'}],
+  projects: [{type: mongoose.Schema.Types.ObjectId, ref: 'project'}],
 
   // references the quizzes ._id s that the user had been assigned to from quiz collection.
   quizzes: [{type: mongoose.Schema.Types.ObjectId, ref: 'quiz'}],

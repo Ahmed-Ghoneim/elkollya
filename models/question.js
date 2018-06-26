@@ -30,11 +30,11 @@ var questionSchema = new mongoose.Schema({
 
   // references all users ._id who up voted
   // that question from users collection.
-  upVotedBy: [{type: mongoose.Schema.Types.ObjectId, unique: true, ref: 'user'}],
+  upVotedBy: [{type: mongoose.Schema.Types.ObjectId, ref: 'user'}],
 
   // references all users ._id who down voted
   // that question from users collection.
-  downVotedBy: [{type: mongoose.Schema.Types.ObjectId, unique: true, ref: 'user'}]
+  downVotedBy: [{type: mongoose.Schema.Types.ObjectId, ref: 'user'}]
 });
 
 questionSchema.pre('save', function(next){

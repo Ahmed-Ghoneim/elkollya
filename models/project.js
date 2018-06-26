@@ -22,10 +22,10 @@ var projectSchema = new mongoose.Schema({
   /* multivalued attributes */
 
   // refrences the project members ._id from users collection
-  members: [{type: mongoose.Schema.Types.ObjectId, ref: 'user', unique: true}],
+  members: [{type: mongoose.Schema.Types.ObjectId, ref: 'user'}],
 
   // refrences the disscusion questions ._id from the questions collection
-  questions: [{type: mongoose.Schema.Types.ObjectId, ref: 'question', unique: true}]
+  questions: [{type: mongoose.Schema.Types.ObjectId, ref: 'question'}]
 });
 
 projectSchema.pre('save', function(next){

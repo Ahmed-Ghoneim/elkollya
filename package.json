@@ -1,6 +1,6 @@
 {
   "name": "elkollya",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "initial start",
   "main": "server.js",
   "scripts": {
@@ -9,6 +9,9 @@
   },
   "author": "Ahmed",
   "license": "MIT",
+  "engines": {
+    "node": "8.9.4"
+  },
   "dependencies": {
     "bcryptjs": "2.4.3",
     "body-parser": "1.18.2",

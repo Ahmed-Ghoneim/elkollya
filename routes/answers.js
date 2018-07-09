@@ -52,8 +52,10 @@ answers.post('/:answerId/upvote', function(req, res){
   Answer.findByIdAndUpdate(req.params.answerId, { $addToSet: {"upVotedBy": req.userId}}, function(err, answer){
     if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
     if(!answer) return res.status(404).json({success: false, msg: 'Answer not found'});
-    // add the upvote.
-    else return res.status(200).json({success: true, msg: 'upvoted successfuly', totalUpvotes: answer.upVotedBy.length});
+    User.findByIdAndUpdate(answer.answeredBy, {$inc:{reputation: .3}}, function(err, user){
+      if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
+      else return res.status(200).json({success: true, msg: 'upvoted successfully', totalUpvotes: answer.upVotedBy.length});
+    });
   });
 });
 
@@ -64,8 +66,10 @@ answers.delete('/:answerId/upvote', function(req, res){
   Answer.findByIdAndUpdate(req.params.answerId, { $removeFromSet: {"upVotedBy": req.userId}}, function(err, answer){
     if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
     if(!answer) return res.status(404).json({success: false, msg: 'Answer not found'});
-    // remove the upvote.
-    else return res.status(200).json({success: true, msg: 'upvoted successfuly', totalUpvotes: answer.upVotedBy.length});
+    User.findByIdAndUpdate(answer.answeredBy, {$inc:{reputation: -.3}}, function(err, user){
+      if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
+      else return res.status(200).json({success: true, msg: 'downvoted successfully', totalUpvotes: answer.upVotedBy.length});
+    });
   });
 });
 

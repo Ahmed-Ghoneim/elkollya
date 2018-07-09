@@ -78,12 +78,14 @@ questions.get('/:questionId/answers', function(req, res){
 
 // upvote a question with its id.
 questions.post('/:questionId/upvote', function(req, res){
-  // find that answer.
-  Question.findByIdAndUpdate(req.params.questionId, { $addToSet: {"upVotedBy": req.userId}}, function(err, question){
+  // add the upvote.
+  Question.findByIdAndUpdate(req.params.questionId, {$addToSet: {"upVotedBy": req.userId}}, function(err, question){
     if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
     if(!question) return res.status(404).json({success: false, msg: 'Question not found'});
-    // add the upvote.
-    else return res.status(200).json({success: true, msg: 'upvoted successfuly', totalUpvotes: question.upVotedBy.length});
+    User.findByIdAndUpdate(question.askedBy, {$inc:{reputation: .3}}, function(err, user){
+      if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
+      else return res.status(200).json({success: true, msg: 'upvoted successfully', totalUpvotes: question.upVotedBy.length});
+    });
   });
 });
 
@@ -91,11 +93,14 @@ questions.post('/:questionId/upvote', function(req, res){
 // remove upvote for a question with its id.
 questions.delete('/:questionId/upvote', function(req, res){
   // find that answer.
-  Answer.findByIdAndUpdate(req.params.questionId, { $removeFromSet: {"upVotedBy": req.userId}}, function(err, question){
+  Question.findByIdAndUpdate(req.params.questionId, { $removeFromSet: {"upVotedBy": req.userId}}, function(err, question){
     if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
     if(!question) return res.status(404).json({success: false, msg: 'Question not found'});
     // remove the upvote.
-    else return res.status(200).json({success: true, msg: 'upvoted successfuly', totalUpvotes: question.upVotedBy.length});
+    User.findByIdAndUpdate(question.askedBy, {$inc:{reputation: -.3}}, function(err, user){
+      if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
+      else return res.status(200).json({success: true, msg: 'downvoted successfully', totalUpvotes: question.upVotedBy.length});
+    });
   });
 });
 

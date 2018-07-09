@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema({
 
   username: { type: String, unique: true, required: '{PATH} is required!' },
 
-  email: { type: String, lowercase: true, unique: true, required: '{PATH} is required!', match: [/^[a-z]+[\.]{0,1}[a-z]+[\d]*@el-eng\.menofia\.edu\.eg$/, 'Please fill a valid email address'] },
+  email: { type: String, lowercase: true, unique: true, required: '{PATH} is required!',
+  match: [/^[a-z]+[\.]{0,1}[a-z]+[\d]*@el-eng\.menofia\.edu\.eg$/, 'Please fill a valid email address'] },
 
   password: { type: String, required: '{PATH} is required!'},
 

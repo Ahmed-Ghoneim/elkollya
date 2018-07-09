@@ -5,7 +5,10 @@ const Token = require('../config/Token');
 
 
 api.post('/register', function(req, res){
+  if(req.body.user.isAdmin == false && !req.body.user.department) return res.status(400).json({success: false, msg: 'Student must be assigned to a department'})
+  // if no password was provided
   if(!req.body.user.password) return res.status(400).json({success: false, msg: 'no password provided'});
+
   bcrypt.genSalt(10, function(err, salt){
     bcrypt.hash(req.body.user.password, salt, function(err, hash){
       if(err) return res.status(500).json({success: false, msg: 'server-side error'});

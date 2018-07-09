@@ -17,7 +17,8 @@ var projectSchema = new mongoose.Schema({
   supervisedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
 
   // references the project creator ._id from users collection.
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: '{PATH} is required!' },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, 
+  ref: 'user', required: '{PATH} is required!' },
 
   /* multivalued attributes */
 

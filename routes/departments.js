@@ -29,7 +29,7 @@ departments.post('/', function(req, res){
   if(!req.isAdmin)  return res.status(401).json({success: false, msg: 'You are not allowed to create a department'});
 
   let createDepartment = {name: req.body.department.name,
-    head: req.body.department.head,
+    head: req.userId,
     subjects: req.body.department.subjects,
     professors: req.body.department.professors
   };

@@ -5,9 +5,11 @@ const Question = require('../models/question');
 
 // create a question and store it to database.
 questions.post('/', function(req, res){
-
+console.log("RRR", req.department);
   let createQuestion = { body: req.body.question.body,
     subject: req.body.question.subject,
+    department: req.department,
+    academicYear: req.academicYear,
     askedBy: req.userId
   };
   // store the question to database.

@@ -6,7 +6,7 @@ var questionSchema = new mongoose.Schema({
 
   date: { type: Date },
 
-  academicYear: { type: Number, match: /^[1-5]$/},
+  academicYear: { type: Number, match: /^[1-5]$/, required: true},
 
   // a property that indicate if the question could
   // be answered anymore or not.

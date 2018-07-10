@@ -1,6 +1,7 @@
 const answers = require('express').Router();
 // Loading models.
 const Answer = require('../models/answer');
+const User = require('../models/user');
 
 // create an answer.
 answers.post('/', function(req, res){
@@ -49,10 +50,10 @@ answers.delete('/:answerId', function(req, res){
 // upvote an answer
 answers.post('/:answerId/upvote', function(req, res){
   // find that answer.
-  Answer.findByIdAndUpdate(req.params.answerId, { $addToSet: {"upVotedBy": req.userId}}, function(err, answer){
+  Answer.findByIdAndUpdate(req.params.answerId, { $addToSet: {"upVotedBy": req.userId}}, {new: true}, function(err, answer){
     if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
     if(!answer) return res.status(404).json({success: false, msg: 'Answer not found'});
-    User.findByIdAndUpdate(answer.answeredBy, {$inc:{reputation: .3}}, function(err, user){
+    User.findByIdAndUpdate(answer.answeredBy, {$inc:{"reputation": .3}}, function(err, user){
       if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
       else return res.status(200).json({success: true, msg: 'upvoted successfully', totalUpvotes: answer.upVotedBy.length});
     });
@@ -63,10 +64,10 @@ answers.post('/:answerId/upvote', function(req, res){
 // remove upvote for an answer with its id.
 answers.delete('/:answerId/upvote', function(req, res){
   // find that answer.
-  Answer.findByIdAndUpdate(req.params.answerId, { $removeFromSet: {"upVotedBy": req.userId}}, function(err, answer){
+  Answer.findByIdAndUpdate(req.params.answerId, { $pull: {upVotedBy: req.userId}}, {new: true}, function(err, answer){
     if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
     if(!answer) return res.status(404).json({success: false, msg: 'Answer not found'});
-    User.findByIdAndUpdate(answer.answeredBy, {$inc:{reputation: -.3}}, function(err, user){
+    User.findByIdAndUpdate(answer.answeredBy, {$inc:{"reputation": -.3}}, function(err, user){
       if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
       else return res.status(200).json({success: true, msg: 'downvoted successfully', totalUpvotes: answer.upVotedBy.length});
     });

@@ -1,11 +1,11 @@
 const questions = require('express').Router();
 
 const Question = require('../models/question');
+const User = require('../models/user');
 
 
 // create a question and store it to database.
 questions.post('/', function(req, res){
-console.log("RRR", req.department);
   let createQuestion = { body: req.body.question.body,
     subject: req.body.question.subject,
     department: req.department,
@@ -81,7 +81,7 @@ questions.get('/:questionId/answers', function(req, res){
 // upvote a question with its id.
 questions.post('/:questionId/upvote', function(req, res){
   // add the upvote.
-  Question.findByIdAndUpdate(req.params.questionId, {$addToSet: {"upVotedBy": req.userId}}, function(err, question){
+  Question.findByIdAndUpdate(req.params.questionId, {$addToSet: {upVotedBy: req.userId}}, {new: true}, function(err, question){
     if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
     if(!question) return res.status(404).json({success: false, msg: 'Question not found'});
     User.findByIdAndUpdate(question.askedBy, {$inc:{reputation: .3}}, function(err, user){
@@ -95,7 +95,7 @@ questions.post('/:questionId/upvote', function(req, res){
 // remove upvote for a question with its id.
 questions.delete('/:questionId/upvote', function(req, res){
   // find that answer.
-  Question.findByIdAndUpdate(req.params.questionId, { $removeFromSet: {"upVotedBy": req.userId}}, function(err, question){
+  Question.findByIdAndUpdate(req.params.questionId, { $pull: {upVotedBy: req.userId}}, {new: true}, function(err, question){
     if(err) return res.status(400).json({success: false, msg: 'Something went wrong, ' + err});
     if(!question) return res.status(404).json({success: false, msg: 'Question not found'});
     // remove the upvote.
